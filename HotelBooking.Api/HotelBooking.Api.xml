@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HotelBooking.Api</name>
+    </assembly>
+    <members>
+        <member name="M:HotelBooking.Api.Controllers.TestingController.#ctor">
+            <summary>
+            А где это просматривается?...
+            </summary>
+            <param name="employeeService"></param>
+        </member>
+    </members>
+</doc>
