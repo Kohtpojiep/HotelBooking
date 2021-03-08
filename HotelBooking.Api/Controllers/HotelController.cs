@@ -21,7 +21,7 @@ namespace HotelBooking.Api.Controllers
         }
 
         /// <summary>
-        /// Вывод всех продуктов, находящихся в базе данных
+        /// Get all hotels
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -33,7 +33,7 @@ namespace HotelBooking.Api.Controllers
             return new ObjectResult(hotel);
         }
         /// <summary>
-        /// 
+        /// Get hotel by id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -53,7 +53,7 @@ namespace HotelBooking.Api.Controllers
         }
 
         /// <summary>
-        /// Добавление продукта в базу данных
+        /// Add hotel into database
         /// </summary>
         /// <param name="hotel"></param>
         /// <returns></returns>
@@ -78,14 +78,14 @@ namespace HotelBooking.Api.Controllers
         }
 
         /// <summary>
-        /// Обновление данных продукта в базе данных
+        /// Update hotel data
         /// </summary>
         /// <param name="hotel"></param>
         /// <returns></returns>
         [HttpPut]
         public ActionResult Put(Hotel hotel)
         {
-            var validation = new ProductValidation().Validate(hotel);
+            var validation = new HotelValidation().Validate(hotel);
             if (validation.IsValid == false)
             {
                 return BadRequest();
@@ -102,21 +102,16 @@ namespace HotelBooking.Api.Controllers
         }
 
         /// <summary>
-        /// Удаление продукта из базы данных
+        /// Delete hotel by id
         /// </summary>
-        /// <param name="hotel"></param>
+        /// <param name="hotelId"></param>
         /// <returns></returns>
         [HttpDelete]
-        public ActionResult Delete(Hotel hotel)
+        public ActionResult Delete(int hotelId)
         {
-            var validation = new ProductValidation().Validate(hotel);
-            if (validation.IsValid == false)
-            {
-                return BadRequest();
-            }
             try
             {
-                _hotelService.Remove(hotel);
+                _hotelService.RemoveById(hotelId);
             }
             catch (Exception e)
             {

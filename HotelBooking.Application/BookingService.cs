@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using HotelBooking.Domain.Exceptions;
 using HotelBooking.Domain.IRepositories;
 using HotelBooking.Domain.IServices;
 using HotelBooking.Domain.Models;
@@ -14,9 +15,9 @@ namespace HotelBooking.Application
         private readonly IBookingRepository _bookingRepository;
         private readonly IMapper _mapper;
 
-        public BookingService(IBookingRepository hotelRepository, IMapper mapper)
+        public BookingService(IBookingRepository bookingRepository, IMapper mapper)
         {
-            _bookingRepository = hotelRepository;
+            _bookingRepository = bookingRepository;
             _mapper = mapper;
         }
 
@@ -52,6 +53,21 @@ namespace HotelBooking.Application
 
             var booking = await _bookingRepository.GetByIdWithInclude(bookingId);
             return booking;
+        }
+        public Task<Booking> Add(Booking booking)
+        {
+            if (booking == null)
+            {
+                throw new NullReferenceException("Booking is null");
+            }
+            try
+            {
+                return _bookingRepository.Add(booking);
+            }
+            catch (RepositoryException ex)
+            {
+                throw new ServiceException(ex.MessageError);
+            }
         }
         public void Update(Booking booking)
         {

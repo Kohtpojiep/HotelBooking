@@ -23,7 +23,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Cheque[]> GetAll()
         {
-            var cheques = await _context.Cheques
+            var cheques = await _context.Cheque
                 .ToArrayAsync()
                 .ContinueWith(source => _mapper.Map<Cheque[]>(source.Result));
             return cheques;
@@ -31,7 +31,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Cheque[]> GetAllWithInclude()
         {
-            var cheques = await _context.Cheques
+            var cheques = await _context.Cheque
                 .Include(x => x.PaymentType)
                 .Include(x => x.Booking)
                 .ToArrayAsync()
@@ -41,14 +41,14 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Cheque> GetById(int roomId)
         {
-            var cheque = await _context.Cheques.FirstOrDefaultAsync(x => x.Id == roomId)
+            var cheque = await _context.Cheque.FirstOrDefaultAsync(x => x.Id == roomId)
                 .ContinueWith(source => _mapper.Map<Cheque>(source.Result)); ;
             return cheque;
         }
 
         public async Task<Cheque> GetByIdWithInclude(int roomId)
         {
-            var cheque = await _context.Cheques.Where(x => x.Id == roomId)
+            var cheque = await _context.Cheque.Where(x => x.Id == roomId)
                 .Include(x => x.PaymentType)
                 .Include(x => x.Booking)
                 .FirstOrDefaultAsync()
@@ -59,7 +59,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
         public Cheque Add(Cheque cheque)
         {
             var mappedCheque = _mapper.Map<Entities.Cheque>(cheque);
-            _context.Cheques.Add(mappedCheque);
+            _context.Cheque.Add(mappedCheque);
             _context.SaveChanges();
 
             var unmappedCheque = _mapper.Map<Cheque>(mappedCheque);
@@ -69,14 +69,14 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
         public void Update(Cheque cheque)
         {
             var mappedCheque = _mapper.Map<Entities.Cheque>(cheque);
-            _context.Cheques.Update(mappedCheque);
+            _context.Cheque.Update(mappedCheque);
             _context.SaveChanges();
         }
 
         public void Remove(int roomId)
         {
-            var removing = _context.Cheques.First(x => x.Id == roomId);
-            _context.Cheques.Remove(removing);
+            var removing = _context.Cheque.First(x => x.Id == roomId);
+            _context.Cheque.Remove(removing);
             _context.SaveChanges();
         }
     }

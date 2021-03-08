@@ -23,7 +23,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Booking[]> GetAll()
         {
-            var rooms = await _context.Bookings
+            var rooms = await _context.Booking
                 .ToArrayAsync()
                 .ContinueWith(source => _mapper.Map<Booking[]>(source.Result));
             return rooms;
@@ -31,9 +31,9 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Booking[]> GetAllWithInclude()
         {
-            var rooms = await _context.Bookings
+            var rooms = await _context.Booking
                 .Include(x => x.BookingStatus)
-                .Include(x => x.BookingAssignedPeople).ThenInclude(x => x.Person)
+                .Include(x => x.BookingAssignedPerson).ThenInclude(x => x.Person)
                 .ToArrayAsync()
                 .ContinueWith(source => _mapper.Map<Booking[]>(source.Result));
             return rooms;
@@ -41,7 +41,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Booking[]> GetAllByRoomId(int roomId)
         {
-            var rooms = await _context.Bookings
+            var rooms = await _context.Booking
                 .Where(x => x.RoomId == roomId)
                 .ToArrayAsync()
                 .ContinueWith(source => _mapper.Map<Booking[]>(source.Result));
@@ -50,10 +50,10 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Booking[]> GetAllWithIncludeByRoomId(int roomId)
         {
-            var rooms = await _context.Bookings
+            var rooms = await _context.Booking
                 .Where(x => x.RoomId == roomId)
                 .Include(x => x.BookingStatus)
-                .Include(x => x.BookingAssignedPeople).ThenInclude(x => x.Person)
+                .Include(x => x.BookingAssignedPerson).ThenInclude(x => x.Person)
                 .ToArrayAsync()
                 .ContinueWith(source => _mapper.Map<Booking[]>(source.Result));
             return rooms;
@@ -61,42 +61,41 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Booking> GetById(int roomId)
         {
-            var room = await _context.Bookings.FirstOrDefaultAsync(x => x.Id == roomId)
+            var room = await _context.Booking.FirstOrDefaultAsync(x => x.Id == roomId)
                 .ContinueWith(source => _mapper.Map<Booking>(source.Result)); ;
             return room;
         }
 
         public async Task<Booking> GetByIdWithInclude(int roomId)
         {
-            var room = await _context.Bookings.Where(x => x.Id == roomId)
+            var room = await _context.Booking.Where(x => x.Id == roomId)
                 .Include(x => x.BookingStatus)
-                .Include(x => x.BookingAssignedPeople).ThenInclude(x => x.Person)
+                .Include(x => x.BookingAssignedPerson).ThenInclude(x => x.Person)
                 .FirstOrDefaultAsync()
                 .ContinueWith(source => _mapper.Map<Booking>(source.Result));
             return room;
         }
 
-        public Booking Add(Booking room)
+        public Task<Booking> Add(Booking room)
         {
             var mappedRoom = _mapper.Map<Entities.Booking>(room);
-            _context.Bookings.Add(mappedRoom);
+            _context.Booking.AddAsync(mappedRoom);
             _context.SaveChanges();
 
-            var unmappedRoom = _mapper.Map<Booking>(mappedRoom);
-            return unmappedRoom;
+            return GetById(mappedRoom.Id);
         }
 
         public void Update(Booking room)
         {
             var mappedRoom = _mapper.Map<Entities.Booking>(room);
-            _context.Bookings.Update(mappedRoom);
+            _context.Booking.Update(mappedRoom);
             _context.SaveChanges();
         }
 
         public void Remove(int roomId)
         {
-            var removing = _context.Bookings.First(x => x.Id == roomId);
-            _context.Bookings.Remove(removing);
+            var removing = _context.Booking.First(x => x.Id == roomId);
+            _context.Booking.Remove(removing);
             _context.SaveChanges();
         }
     }

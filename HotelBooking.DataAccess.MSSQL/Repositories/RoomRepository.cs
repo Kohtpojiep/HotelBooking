@@ -23,7 +23,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Room[]> GetAll()
         {
-            var rooms = await _context.Rooms
+            var rooms = await _context.Room
                 .AsNoTracking()
                 .ToArrayAsync()
                 .ContinueWith(source => _mapper.Map<Room[]>(source.Result));
@@ -32,7 +32,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Room[]> GetAllWithInclude()
         {
-            var rooms = await _context.Rooms
+            var rooms = await _context.Room
                 .Include(x => x.RoomType)
                 .Include(x => x.RoomInfo).ThenInclude(x => x.Image)
                 .AsNoTracking()
@@ -43,7 +43,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Room[]> GetAllByHotelId(int hotelId)
         {
-            var rooms = await _context.Rooms
+            var rooms = await _context.Room
                 .Where(x => x.HotelId == hotelId)
                 .AsNoTracking()
                 .ToArrayAsync()
@@ -53,7 +53,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Room[]> GetAllWithIncludeByHotelId(int hotelId)
         {
-            var rooms = await _context.Rooms
+            var rooms = await _context.Room
                 .Where(x => x.HotelId == hotelId)
                 .Include(x => x.RoomType)
                 .Include(x => x.RoomInfo).ThenInclude(x => x.Image)
@@ -65,7 +65,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Room> GetById(int roomId)
         {
-            var room = await _context.Rooms
+            var room = await _context.Room
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == roomId)
                 .ContinueWith(source => _mapper.Map<Room>(source.Result)); ;
@@ -74,7 +74,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Room> GetByIdWithInclude(int roomId)
         {
-            var room = await _context.Rooms.Where(x => x.Id == roomId)
+            var room = await _context.Room.Where(x => x.Id == roomId)
                 .Include(x => x.RoomType)
                 .Include(x => x.RoomInfo).ThenInclude(x => x.Image)
                 .AsNoTracking()
@@ -86,7 +86,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
         public Room Add(Room room)
         {
             var mappedRoom = _mapper.Map<Entities.Room>(room);
-            _context.Rooms.Add(mappedRoom);
+            _context.Room.Add(mappedRoom);
             _context.SaveChanges();
 
             var unmappedRoom = _mapper.Map<Room>(mappedRoom);
@@ -96,14 +96,14 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
         public void Update(Room room)
         {
             var mappedRoom = _mapper.Map<Entities.Room>(room);
-            _context.Rooms.Update(mappedRoom);
+            _context.Room.Update(mappedRoom);
             _context.SaveChanges();
         }
 
         public void Remove(int roomId)
         {
-            var removing = _context.Rooms.First(x => x.Id == roomId);
-            _context.Rooms.Remove(removing);
+            var removing = _context.Room.First(x => x.Id == roomId);
+            _context.Room.Remove(removing);
             _context.SaveChanges();
         }
     }

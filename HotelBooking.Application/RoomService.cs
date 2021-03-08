@@ -95,6 +95,30 @@ namespace HotelBooking.Application
             var room = await _roomRepository.GetByIdWithInclude(hotelId);
             return room;
         }
+        public Room Add(Room room)
+        {
+            if (room == null)
+            {
+                throw new NullReferenceException("Room is null");
+            }
+
+            /*
+            var validation = new HotelValidation().Validate(room);
+            if (validation.IsValid == false)
+            {
+                throw new ServiceException(String.Join('\n', validation.Errors));
+            }
+            */
+
+            try
+            {
+                return _roomRepository.Add(room);
+            }
+            catch (RepositoryException ex)
+            {
+                throw new ServiceException(ex.MessageError);
+            }
+        }
         public void Update(Room room)
         {
             if (room == null)

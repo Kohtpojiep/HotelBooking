@@ -14,7 +14,7 @@ namespace HotelBooking.Domain.IRepositories
         Task<Booking[]> GetAllWithIncludeByRoomId(int roomId);
         Task<Booking> GetById(int bookingId);
         Task<Booking> GetByIdWithInclude(int bookingId);
-        Booking Add(Booking room);
+        Task<Booking> Add(Booking booking);
         void Update(Booking room);
         void Remove(int bookingId);
     }

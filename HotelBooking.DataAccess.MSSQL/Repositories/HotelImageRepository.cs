@@ -23,7 +23,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<HotelImage[]> GetAll()
         {
-            var hotelImages = await _context.HotelImages
+            var hotelImages = await _context.HotelImage
                 .AsNoTracking()
                 .ToArrayAsync()
                 .ContinueWith(source => _mapper.Map<HotelImage[]>(source.Result));
@@ -33,7 +33,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<HotelImage> GetById(int hotelImageId)
         {
-            var hotel = await _context.HotelImages
+            var hotel = await _context.HotelImage
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == hotelImageId)
                 .ContinueWith(source => _mapper.Map<HotelImage>(source.Result)); ;
@@ -43,7 +43,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
         public HotelImage Add(HotelImage hotelImage)
         {
             var mappedHotel = _mapper.Map<Entities.HotelImage>(hotelImage);
-            _context.HotelImages.Add(mappedHotel);
+            _context.HotelImage.Add(mappedHotel);
             _context.SaveChanges();
 
             var unmappedEmployee = _mapper.Map<HotelImage>(mappedHotel);
@@ -53,14 +53,14 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
         public void Update(HotelImage hotelImage)
         {
             var mappedHotelImage = _mapper.Map<Entities.HotelImage>(hotelImage);
-            _context.HotelImages.Update(mappedHotelImage);
+            _context.HotelImage.Update(mappedHotelImage);
             _context.SaveChanges();
         }
 
-        public void Remove(int hotelId)
+        public void Remove(int hotelImageId)
         {
-            var removing = _context.Hotels.First(x => x.Id == hotelId);
-            _context.Hotels.Remove(removing);
+            var removing = _context.HotelImage.First(x => x.Id == hotelImageId);
+            _context.HotelImage.Remove(removing);
             _context.SaveChanges();
         }
     }

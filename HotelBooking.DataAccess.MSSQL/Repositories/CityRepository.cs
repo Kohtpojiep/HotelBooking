@@ -24,7 +24,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<City[]> GetAll()
         {
-            var cities = await _context.Cities
+            var cities = await _context.City
                 .AsNoTracking()
                 .ToArrayAsync()
                 .ContinueWith(source => _mapper.Map<City[]>(source.Result));
@@ -33,27 +33,27 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<City> Get(int cityId)
         {
-            var city = await _context.Cities
+            var city = await _context.City
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == cityId)
-                .ContinueWith(source => _mapper.Map<City>(source.Result));;
+                .ContinueWith(source => _mapper.Map<City>(source.Result)); ;
             return city;
         }
 
         public City Add(City city)
         {
             var mappedCity = _mapper.Map<Entities.City>(city);
-            _context.Cities.Add(mappedCity);
+            _context.City.Add(mappedCity);
             _context.SaveChanges();
 
             var unmappedHotel = _mapper.Map<City>(mappedCity);
-            return unmappedHotel; 
+            return unmappedHotel;
         }
 
         public City[] Add(City[] cities)
         {
             var mappedCities = _mapper.Map<Entities.City[]>(cities);
-            _context.Cities.AddRange(mappedCities);
+            _context.City.AddRange(mappedCities);
             _context.SaveChanges();
 
             var unmappedHotels = _mapper.Map<City[]>(mappedCities);
@@ -63,28 +63,28 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
         public void Update(City city)
         {
             var mappedCity = _mapper.Map<Entities.City>(city);
-            _context.Cities.Update(mappedCity);
+            _context.City.Update(mappedCity);
             _context.SaveChanges();
         }
 
         public void Update(City[] cities)
         {
             var mappedCities = _mapper.Map<Entities.City[]>(cities);
-            _context.Cities.UpdateRange(mappedCities);
+            _context.City.UpdateRange(mappedCities);
             _context.SaveChanges();
         }
 
         public void Remove(City city)
         {
             var mappedCity = _mapper.Map<Entities.City>(city);
-            _context.Cities.Remove(mappedCity);
+            _context.City.Remove(mappedCity);
             _context.SaveChanges();
         }
 
         public void Remove(City[] cities)
         {
             var mappedCities = _mapper.Map<Entities.City>(cities);
-            _context.Cities.RemoveRange(mappedCities);
+            _context.City.RemoveRange(mappedCities);
             _context.SaveChanges();
         }
     }

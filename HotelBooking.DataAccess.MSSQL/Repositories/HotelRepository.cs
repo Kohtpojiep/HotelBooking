@@ -26,7 +26,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Hotel[]> GetAll()
         {
-            var hotels = await _context.Hotels
+            var hotels = await _context.Hotel
                 .AsNoTracking()
                 .ToArrayAsync()
                 .ContinueWith(source => _mapper.Map<Hotel[]>(source.Result));
@@ -35,7 +35,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Hotel[]> GetAllWithInclude()
         {
-            var hotels = await _context.Hotels
+            var hotels = await _context.Hotel
                 .AsNoTracking()
                 .Include(x => x.HotelClass)
                 .Include(x => x.Image)
@@ -47,7 +47,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Hotel> GetById(int hotelId)
         {
-            var hotel = await _context.Hotels
+            var hotel = await _context.Hotel
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == hotelId)
                 .ContinueWith(source => _mapper.Map<Hotel>(source.Result)); ;
@@ -56,7 +56,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
 
         public async Task<Hotel> GetByIdWithInclude(int hotelId)
         {
-            var hotel = await _context.Hotels.Where(x => x.Id == hotelId)
+            var hotel = await _context.Hotel.Where(x => x.Id == hotelId)
                 .AsNoTracking()
                 .Include(x => x.HotelClass)
                 .Include(x => x.Image)
@@ -69,7 +69,7 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
         public Hotel Add(Hotel hotel)
         {
             var mappedHotel = _mapper.Map<Entities.Hotel>(hotel);
-            _context.Hotels.Add(mappedHotel);
+            _context.Hotel.Add(mappedHotel);
             _context.SaveChanges();
 
             var unmappedEmployee = _mapper.Map<Hotel>(mappedHotel);
@@ -79,14 +79,14 @@ namespace HotelBooking.DataAccess.MSSQL.Repositories
         public void Update(Hotel hotel)
         {
             var mappedHotel = _mapper.Map<Entities.Hotel>(hotel);
-            _context.Hotels.Update(mappedHotel);
+            _context.Hotel.Update(mappedHotel);
             _context.SaveChanges();
         }
 
         public void Remove(int hotelId)
         {
-            var removing = _context.Hotels.First(x => x.Id == hotelId);
-            _context.Hotels.Remove(removing);
+            var removing = _context.Hotel.First(x => x.Id == hotelId);
+            _context.Hotel.Remove(removing);
             _context.SaveChanges();
         }
     }

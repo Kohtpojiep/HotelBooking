@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-#nullable disable
+// Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
+// If you have enabled NRTs for your project, then un-comment the following line:
+// #nullable disable
 
 namespace HotelBooking.DataAccess.MSSQL.Entities
 {
@@ -9,6 +11,7 @@ namespace HotelBooking.DataAccess.MSSQL.Entities
     {
         public Hotel()
         {
+            Room = new HashSet<Room>();
         }
 
         public int Id { get; set; }
@@ -22,5 +25,6 @@ namespace HotelBooking.DataAccess.MSSQL.Entities
         public virtual HotelClassification HotelClass { get; set; }
         public virtual HotelImage Image { get; set; }
         public virtual Street Street { get; set; }
+        public virtual ICollection<Room> Room { get; set; }
     }
 }

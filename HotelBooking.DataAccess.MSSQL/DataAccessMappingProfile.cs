@@ -46,8 +46,6 @@ namespace HotelBooking.DataAccess.MSSQL
                 .ReverseMap();
             CreateMap<Street, Entities.Street>()
                 .ReverseMap();
-            CreateMap<User, Entities.User>()
-                .ReverseMap();
         }
     }
 }

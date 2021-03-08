@@ -14,6 +14,7 @@ namespace HotelBooking.Domain.IServices
         Task<Room[]> GetAllWithIncludeByHotelId(int hotelId);
         Task<Room> GetById(int roomId);
         Task<Room> GetByIdWithInclude(int roomId);
+        Room Add(Room room);
         void Update(Room room);
         void RemoveById(int roomId);
     }
